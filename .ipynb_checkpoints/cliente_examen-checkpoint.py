@@ -36,39 +36,49 @@ class Cliente():
 
             threading.Thread(target=self.recibir, daemon=True).start()
             
-            A = [[1 for i in range(data_arr[0])] for j in range(data_arr[1])] # Genero A[21535220][6]con num. aleatorios del 0 al 215, ver excel 
-            B = [[1 for i in range(data_arr[2])] for j in range(data_arr[3])] # Genero B[6][21535220]con num. aleatorios del 0 al 215, ver excel
+            while True:
+                
+                msg1 = input("Desea calcular la multiplicacion de matrices? -> **Si = 1 **No = 0")
+                if msg1 == '1':
+                
+                    self.s.send(pickle.dumps(msg1))
+            
+                    A = [[random.randint(0,215) for i in range(data_arr[0])] for j in range(data_arr[1])] # Genero A[21535220][6]con num. aleatorios   
+                    B = [[random.randint(0,215) for i in range(data_arr[2])] for j in range(data_arr[3])] # Genero B[6][21535220]con num. aleatorios 
     
-            n_fil_A = len(A) # Obtengo num de filas de A 
-            n_col_A = len(A[0]) # Obtengo num de colunmas de A 
-            n_fil_B = len(B) # Obtengo num de filas de B
-            n_col_B = len(B[0]) # # Obtengo num de filas de B
+                    n_fil_A = len(A) # Obtengo num de filas de A 
+                    n_col_A = len(A[0]) # Obtengo num de colunmas de A 
+                    n_fil_B = len(B) # Obtengo num de filas de B
+                    n_col_B = len(B[0]) # # Obtengo num de filas de B
     
-            if n_col_A != n_fil_B: raise Exception('Dimensiones no validas') # Compruebo que se puedan multiplicar A y B
+                    if n_col_A != n_fil_B: raise Exception('Dimensiones no validas') # Compruebo que se puedan multiplicar A y B
     
-            inicioS = time.time()
-            X = ('El resultado en secuencial es : ', self.sec_mult(A, B, n_fil_A, n_col_A, n_fil_B, n_col_B)) # Ejecuto multiplicacion secuencial
-            finS = time.time()
+                    inicioS = time.time()
+                    X = ('El resultado en secuencial es : ', self.sec_mult(A, B, n_fil_A, n_col_A, n_fil_B, n_col_B)) # Ejecuto multiplicacion secuencial
+                    finS = time.time()
             
-            inicioP = time.time()
-            #Y = ('El resultado en paralelo es : ', self.par_mult(A, B, n_fil_A, n_col_A, n_fil_B, n_col_B)) # Ejecuto multiplicacion paralela
-            finP = time.time()
+                    inicioP = time.time()
+                    #Y = ('El resultado en paralelo es : ', self.par_mult(A, B, n_fil_A, n_col_A, n_fil_B, n_col_B)) # Ejecuto multiplicacion paralela
+                    finP = time.time()
             
-            msg = (nick,X)
+                    msg = (nick,X)
             
-            print('\n    ',msg)
-            self.enviar(msg)
+                    print('\n    ',msg)
+                    self.enviar(msg)
             
-            print('\n\n    Matriz  A y B se han multiplicado con exito en SECUENCIAL ha tardado ', finS-inicioS)
-            print('\n\n    Matriz  A y B se han multiplicado con exito en PARALELO ha tardado ', finP-inicioP)
-            print('\n')
+                    print('\n\n    Matriz  A y B se han multiplicado con exito en SECUENCIAL ha tardado ', finS-inicioS)
+                    print('\n\n    Matriz  A y B se han multiplicado con exito en PARALELO ha tardado ', finP-inicioP)
+                    print('\n')
+                
+                else: pass
+            
 
     def recibir(self):
 
             while True:
                 try:
                         data = self.s.recv(4096)
-                        if data: data_arr = pickle.loads(data)
+                        data_arr = pickle.loads(data)
                         
 
                 except: print('ERROR: Mensaje demasiado grande')

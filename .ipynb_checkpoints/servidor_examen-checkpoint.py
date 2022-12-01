@@ -57,10 +57,6 @@ class Servidor():
                 conn.setblocking(False)
                 self.clientes.append(conn)
             except: pass
-        
-    def verResult(self, msg):
-        Result = pickle.loads(msg)
-        print(Result)
 
     def procesarC(self):
         print('\n\tHilo PROCESAR con ID =',threading.current_thread().name, '\n\tHilo en modo DAEMON = TRUE'
@@ -73,14 +69,13 @@ class Servidor():
                         if data: self.broadcast(data,c)
                     except: pass
 
-    def broadcast(self, msg, cliente):
-        self.verResult()
+    def broadcast(self, dimensiones_arr, cliente):
         for c in self.clientes:
             print("Clientes conectados ahora = ", len(self.clientes))
             try:
                 if c != cliente: 
-                    print(pickle.loads(msg))
-                    c.send(dimensiones_array)
+                    #print(pickle.loads(msg))
+                    c.send(dimensiones_arr)
             except: self.clientes.remove(c)
 
 arrancar = Servidor() 
